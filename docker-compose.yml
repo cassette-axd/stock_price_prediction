@@ -1,10 +1,22 @@
 # Used to run the Zookeeper (needed by Kafka) and Kafka broker on port 9092
-# To run, enter in the terminal: docker-compose up -d
+# To run, enter in the terminal: docker-compose up -d (make sure Docker Desktop is running first)
+# To stop and remove all the containers defined in your compose file, run this in the same directory as your docker-compose.yml file: docker-compose down
+# If you only want to stop (but not remove) the containers, run: docker-compose stop
+# To check all running containers: docker ps
+# To see all containers (including stopped ones): docker ps -a
+# To confirm if docker-compose down worked: docker network ls
+# To reclaim disk space from stopped containers, unused networks, and dangling images: docker system prune -f
+
+# Run this to stop and rerun container:
+# docker-compose down -v
+# docker-compose pull
+# docker-compose up -d
+
 
 version: '3.8'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:6.2.1
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -12,7 +24,7 @@ services:
       - "2181:2181"
 
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:6.2.1
     depends_on:
       - zookeeper
     ports:
@@ -21,4 +33,5 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
