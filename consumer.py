@@ -159,8 +159,6 @@ for message in consumer:
         "Prediction Error": y_test_predicted - y_test_actual
     })
 
-    results_df = pd.concat([train_df, test_df], ignore_index=True)
-
     # Add RMSE summary row
     metrics_df = pd.DataFrame([{
         "Ticker": ticker,
@@ -169,9 +167,9 @@ for message in consumer:
         "Timestamp": datetime.now()
     }])
 
-    # Save to Excel (replace file each run for simplicity)
-    with pd.ExcelWriter("stock_predictions.xlsx", engine="openpyxl", mode="w") as writer:
-        results_df.to_excel(writer, sheet_name=f"{ticker}_Predictions", index=False)
-        metrics_df.to_excel(writer, sheet_name=f"{ticker}_Metrics", index=False)
+    # Save to Excel
+    train_df.to_excel(f"{ticker}_Train_Predictions.xlsx", sheet_name=f"{ticker}_Train_Predictions", index=False)
+    test_df.to_excel(f"{ticker}_Test_Predictions.xlsx", sheet_name=f"{ticker}_Test_Predictions", index=False)
+    metrics_df.to_excel(f"{ticker}_Metrics.xlsx", sheet_name=f"{ticker}_Metrics", index=False)
     
-    print(f"Exported predictions for {ticker} to stock_predictions.xlsx")
+    print(f"Exported predictions for {ticker}.")
