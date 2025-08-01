@@ -57,7 +57,6 @@ This setup enables a continuous loop of prediction, evaluation, and visualizatio
 - Dockerized setup for easy reproducibility and scaling
 
 ## How to Run Project
-###Prerequisites
 Make sure you have the following installed:
 
 - Docker Desktop
